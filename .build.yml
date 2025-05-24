@@ -9,6 +9,9 @@ environment:
   REGISTRY: quay.io
   REPOSITORY: drangon/pointing-poker
 tasks:
+  - setup-cgroups: |
+      sudo rc-update add cgroups
+      sudo rc-service cgroups start
   - setup-qemu: |
       sudo podman run --privileged --rm docker.io/tonistiigi/binfmt --install all
   - calculate-image-name: |
