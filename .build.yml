@@ -10,7 +10,7 @@ environment:
   REPOSITORY: drangon/pointing-poker
 tasks:
   - setup-qemu: |
-      sudo podman run --privileged --rm docker.io/tonistiigi/binfmt --install all"
+      sudo podman run --privileged --rm docker.io/tonistiigi/binfmt --install all
   - calculate-image-name: |
       TAG="${GIT_REF##*/}"
       IMAGE_NAME="${REGISTRY}/${REPOSITORY}:${TAG}"
