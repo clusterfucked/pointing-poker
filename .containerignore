@@ -4,6 +4,12 @@
 /.github/
 .editorconfig
 .gitignore
-Dockerfile
+Containerfile
 README.md
 LICENSE
+.direnv
+.devenv
+devenv.nix
+devenv.yaml
+.hut.scfg
+.containeringore
