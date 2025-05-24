@@ -1,6 +1,9 @@
 image: alpine/edge
 packages:
   - podman
+  - iptables
+  - qemu-openrc
+  - qemu-aarch64
 secrets:
   - f2e4a894-42a3-4657-a693-ad1acb355059
 sources:
@@ -12,15 +15,25 @@ tasks:
   - setup-cgroups: |
       sudo rc-update add cgroups
       sudo rc-service cgroups start
+  - setup-podman: |
+      RUNNER=$(whoami)
+      sudo modprobe tun
+      echo "tun" | sudo tee -a /etc/modules
+      echo "${RUNNER}:100000:65536" | sudo tee -a /etc/subuid
+      echo ${RUNNER}:100000:65536 | sudo tee -a /etc/subgid
   - setup-qemu: |
-      sudo podman run --privileged --rm docker.io/tonistiigi/binfmt --install all
+      sudo modprobe binfmt_misc
+      echo "binfmt_misc" | sudo tee -a /etc/modules
+      sudo rc-update add qemu-binfmt
+      sudo rc-service qemu-binfmt start
   - calculate-image-name: |
       TAG="${GIT_REF##*/}"
       IMAGE_NAME="${REGISTRY}/${REPOSITORY}:${TAG}"
-      echo ${IMAGE_NAME} >> ~/.buildenv
+      echo "export IMAGE_NAME=${IMAGE_NAME}" >> ~/.buildenv
   - create-manifest: |
       podman manifest create "${IMAGE_NAME}"
   - build-images: |
-      podman build --platform linux/amd63,linux/arm64 --manifest ${IMAGE_NAME} .
+      cd pointing-poker
+      podman build --platform linux/amd64,linux/arm64 --manifest ${IMAGE_NAME} .
   - push-images: |
       podman manifest push "${IMAGE_NAME}"
