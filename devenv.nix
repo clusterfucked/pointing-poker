@@ -3,6 +3,7 @@
 {
   packages = [
     pkgs.gitFull
+    pkgs.hut
   ];
 
   languages.javascript.enable = true;
