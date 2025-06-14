@@ -14,5 +14,5 @@ RUN yarn build
 
 USER node
 
-ENTRYPOINT [ "yarn" ]
-CMD [ "start" ]
+ENTRYPOINT [ "node" ]
+CMD [ "__sapper__/build" ]
