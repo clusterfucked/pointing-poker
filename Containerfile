@@ -1,7 +1,6 @@
-FROM docker.io/node:lts-alpine
+FROM docker.io/node:lts-alpine as build
 
 EXPOSE 3000
-
 WORKDIR /var/usr/app
 
 COPY package.json ./
@@ -13,4 +12,7 @@ COPY . .
 
 RUN yarn build
 
-CMD [ "yarn", "start" ]
+USER node
+
+ENTRYPOINT [ "yarn" ]
+CMD [ "start" ]
