@@ -14,7 +14,6 @@ const fileLoaderRule = {
   test: /\.(png|jpe?g|gif)$/i,
   use: ["file-loader"],
 };
-const conditionNames = ["svelte"];
 
 export const client = {
   entry: sapperWebpack.client.entry(),
