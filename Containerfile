@@ -15,7 +15,7 @@ COPY . .
 
 RUN yarn build
 
-FROM gcr.io/distroless/nodejs24-debian12:nonroot
+FROM gcr.io/distroless/nodejs24-debian13:nonroot
 
 EXPOSE 3000
 WORKDIR /app
