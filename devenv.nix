@@ -2,10 +2,7 @@
 
 {
   packages = [
-    pkgs.gitFull
     pkgs.nixd
-  
-    pkgs.hut
   ];
 
   languages.nix.enable = true;

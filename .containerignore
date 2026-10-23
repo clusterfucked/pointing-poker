@@ -16,6 +16,3 @@ devenv.nix
 devenv.yaml
 .devenv.flake.nix
 .envrc
-
-.hut.scfg
-.build.yaml

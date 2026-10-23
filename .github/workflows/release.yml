@@ -1,0 +1,36 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    uses: docker/github-builder/.github/workflows/build.yml@58cb9f5b71b1836d6f690c1e95effdeb9b98cb8a # v1.17.0
+    permissions:
+      contents: read
+      id-token: write
+      packages: write
+    with:
+      distribute: true
+      output: image
+      push: true
+      platforms: linux/amd64,linux/arm64
+      cache: true
+      cache-mode: max
+      file: "Containerfile"
+      meta-images: |
+        quay.io/drangon/pointing-poker
+        ghcr.io/clusterfucked/pointing-poker
+      meta-tags: |
+        type=semver,pattern=v{{version}}
+        type=semver,pattern=v{{major}}.{{minor}}
+        type=raw,value=latest
+    secrets:
+      registry-auths: |
+        - registry: quay.io
+          username: ${{ secrets.QUAY_USERNAME }}
+          password: ${{ secrets.QUAY_PASSWORD }}
+        - registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
