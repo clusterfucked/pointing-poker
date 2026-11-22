@@ -1,18 +1,36 @@
-/__sapper__/
-/__cypress__/
-/node_modules/
-/.github/
-.editorconfig
-.gitignore
-Containerfile
-.containeringore
+# This file excludes paths from the container build context.
+.containerignore
+.dockerignore
 
-README.md
-LICENSE
+.git
+!.git/HEAD
+!.git/refs
 
+# Common development/test artifacts
+/cover/
+/doc/
+/test/
+/tmp/
+.elixir_ls
+
+# Mix artifacts
+/_build/
+/deps/
+*.ez
+
+# Generated on crash by the VM
+erl_crash.dump
+
+# Static artifacts - These should be fetched and built inside the container image
+/assets/node_modules/
+/priv/static/assets/
+/priv/static/cache_manifest.json
+
+# Devenv / direnv
 .direnv
-.devenv
+.devenv*
 devenv.nix
 devenv.yaml
-.devenv.flake.nix
+devenv.lock
 .envrc
+.pre-commit-config.yaml

@@ -1,13 +1,45 @@
 { pkgs, lib, config, inputs, ... }:
 
 {
-  packages = [
-    pkgs.nixd
+  packages = with pkgs; [
+    nixd
+    beam29Packages.hex
+    beam29Packages.rebar3
+    tailwindcss_4
+    esbuild
+    inotify-tools
   ];
 
   languages.nix.enable = true;
-  
-  languages.javascript.enable = true;
-  languages.javascript.yarn.enable = true;
-  languages.javascript.yarn.install.enable = false;
+
+  languages.elixir = {
+    enable = true;
+    package = pkgs.beam29Packages.elixir;
+    lsp.enable = true;
+    lsp.package = pkgs.beam29Packages.elixir-ls;
+  };
+
+  languages.javascript = {
+    enable = true;
+    directory = "./assets";
+    pnpm.enable = true;
+    pnpm.install.enable = true;
+  };
+
+  git-hooks.hooks = {
+    check-shebang-scripts-are-executable.enable = true;
+    check-symlinks.enable = true;
+    check-yaml.enable = true;
+    check-merge-conflicts.enable = true;
+    check-json.enable = true;
+    check-executables-have-shebangs.enable = true;
+    check-added-large-files.enable = true;
+    check-case-conflicts.enable = true;
+    markdownlint.enable = true;
+    nixpkgs-fmt.enable = true;
+    prettier.enable = true;
+    trufflehog.enable = true;
+    mix-format.enable = true;
+    mixed-line-endings.enable = true;
+  };
 }
