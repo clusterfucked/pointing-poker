@@ -8,6 +8,22 @@ import "./theme";
 
 const NAME_STORAGE_KEY = "pointing_poker:name";
 
+// Unregister any stale legacy service workers and clear old caches.
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.getRegistrations().then((registrations) => {
+    for (const registration of registrations) {
+      registration.unregister();
+    }
+  });
+  if ("caches" in window) {
+    caches.keys().then((keys) => {
+      for (const key of keys) {
+        caches.delete(key);
+      }
+    });
+  }
+}
+
 const Hooks = {
   RememberName: {
     mounted() {

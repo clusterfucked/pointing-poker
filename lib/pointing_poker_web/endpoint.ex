@@ -40,5 +40,14 @@ defmodule PointingPokerWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
+  plug :reject_legacy_service_worker
   plug PointingPokerWeb.Router
+
+  defp reject_legacy_service_worker(%Plug.Conn{request_path: "/service-worker.js"} = conn, _opts) do
+    conn
+    |> Plug.Conn.send_resp(404, "Not Found")
+    |> Plug.Conn.halt()
+  end
+
+  defp reject_legacy_service_worker(conn, _opts), do: conn
 end
