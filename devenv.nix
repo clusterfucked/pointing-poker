@@ -10,6 +10,29 @@
     inotify-tools
   ];
 
+  tasks."app:deps" = {
+    exec = ''
+      set -euo pipefail
+      mix deps.get
+      pnpm --dir assets install --frozen-lockfile
+    '';
+    before = [
+      "devenv:git-hooks:run"
+      "devenv:enterTest"
+    ];
+  };
+
+  enterTest = ''
+    set -euo pipefail
+    export MIX_ENV=test
+    mix deps.unlock --check-unused
+    mix deps.compile
+    mix compile --warnings-as-errors
+    mix format --check-formatted
+    mix test
+    mix assets.build
+  '';
+
   languages.nix.enable = true;
 
   languages.elixir = {
